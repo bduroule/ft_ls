@@ -13,6 +13,7 @@
 
 #include "ft_ls.h"
 
+
 static void init_option(t_option *op)
 {
     (*op).a = 0;
@@ -23,43 +24,21 @@ static void init_option(t_option *op)
     (*op).s_size = 0;
 }
 
+void    ls_error(char *s, int n)
+{
+    if (n == -1)
+    {
+        ft_putstr_fd("ls : ", 2);
+        //ft_putstr_fd(s, 2);
+        perror(s);
+        exit(EXIT_FAILURE);
+    }
+}
+
 void    ls_usage(void)
 {
     write(1, "usage: ./ft_ls [-artRlS] [file ...]\n", 36);
     exit(0);
-}
-
-static void    parse_path(char **av, t_option op, int i, int n)
-{
-    t_recu  *list;
-    struct stat *buff;
-
-    list = NULL;
-    if (!(buff = malloc(sizeof(*buff))))
-        return ;
-    if (n == 0)
-            read_path(op, list, ".");
-    if (check_sigle(av, i + 1, buff))
-        sigle_file(av, i + 1, buff, op);
-    while (av[++i])
-    {
-        lstat(av[i], buff);
-        if (type_file(buff) == 'l' || type_file(buff) == '-')
-            ;
-        else
-        {
-            if (n > 1)
-            {
-                ft_putchar('\n');
-                ft_putstr(av[i]);
-                ft_putendl(":");
-            }
-            read_path(op, list, av[i]);
-            if (av[i + 1])
-                 write(1, "\n", 1);
-        }
-    }
-    free(buff);
 }
 
 static int parse_option(char **av, t_option *op, int i)
@@ -103,7 +82,7 @@ int main(int ac, char **av)
     t_option op;
     int i;
     (void)ac;
-    
+
     i = -1;
     init_option(&op);
     i = parse_option(av, &op, i);

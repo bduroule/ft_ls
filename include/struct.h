@@ -14,6 +14,7 @@
 # ifndef STRUCT_H
 #define STRUCT_H
 
+# include <limits.h>
 
 typedef struct	s_option
 {
@@ -29,7 +30,7 @@ typedef struct	s_option
 typedef struct	s_recu
 {
 	int			id;
-	char		path[1024];
+	char		path[PATH_MAX];
 	char		perm[11];
 	int 		link;
 	char		*user;
@@ -38,7 +39,7 @@ typedef struct	s_recu
 	char		*date;
 	time_t		time;
     char         test;
-	char		name[1024];
+	char		name[NAME_MAX];
 	int			block;
 	int			minor;
 	int			major;
@@ -55,7 +56,15 @@ typedef struct s_max
 	short int	g_max;
 	short int	u_max;
 	short int	mi_max;
+	short int	ma_max;
 	short int	t_block;
 }				t_max;
+
+typedef struct s_index
+{
+	int			i;
+	int			j;
+	int			n;
+}				t_index;
 
 # endif

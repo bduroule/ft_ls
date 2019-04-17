@@ -13,13 +13,14 @@
 
 #include "ft_ls.h"
 
-void    pars_sigle(t_option op, char *file, struct stat *buff)
+void    pars_sigle(t_recu **list, t_option op, char *file, struct stat *buff)
 {
     t_recu *r;
 
     if (!(r = (t_recu *)malloc(sizeof(t_recu))))
         return ;
     ft_strcpy(r->name, file);
+    ft_strcpy(r->path, file);
     r->right = NULL;
     r->next = NULL;
     r->prev = NULL;
@@ -27,8 +28,7 @@ void    pars_sigle(t_option op, char *file, struct stat *buff)
     r->single = 1;
     permision(r, buff);
     other(r, buff);
-    display(r, op);
-    free_list(&r);
+    ls_list_insert_sort(list, r, op);
 }
 
 static t_recu    *file_init(struct dirent *rd, t_recu *rec, char *path)
@@ -42,7 +42,10 @@ static t_recu    *file_init(struct dirent *rd, t_recu *rec, char *path)
     ft_strcat(rec->path, rd->d_name);
     if ((lstat(rec->path, buff)) < 0)
         if ((stat(rec->path, buff) < 0))
-            perror(rd->d_name);
+        {
+            perror(" f");
+            exit(0);
+         }
     ft_strcpy(rec->name, rd->d_name);
     rec->block = buff->st_blocks;
     permision(rec, buff);
@@ -73,7 +76,12 @@ void    read_path(t_option op, t_recu *list, char *path)
     struct dirent *rd;
 
     i = 1;
-    dir = opendir(path);
+    if (!(dir = opendir(path)))
+    {
+        write(1, "coucou", 6);
+        perror(path);
+        return ;
+    }
     while ((rd = readdir(dir)))
     {
         if (op.a == 1 && rd->d_name[0] == '.')

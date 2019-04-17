@@ -53,7 +53,7 @@ SRC_NAME =	ft_atoi.c			ft_strcmp.c			ft_strcpy.c 		\
  	  		ft_foreach.c		ft_factorial.c		ft_power.c			\
  	  		ft_is_prime.c		ft_swap.c			ft_range.c 			\
  		  	ft_intsize.c 		get_next_line.c		ft_sqrt.c			\
-			ft_strcchr.c		ft_putspace.c		
+			ft_strcchr.c		ft_putspace.c		ft_avlen.c	
 
 INC = $(addprefix $(INC_PATH)/, $(INC_NAME))
 OBJ	= $(addprefix $(OBJ_PATH)/, $(SRC_NAME:.c=.o))

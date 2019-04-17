@@ -23,6 +23,7 @@
 # include <errno.h>
 # include "../libft/include/libft.h"
 # include "struct.h"
+# include <limits.h>
 
 /**/
 #include <stdio.h>
@@ -41,8 +42,13 @@ void	ls_list_insert_sort( t_recu **head, t_recu *newl, t_option op);
 void    init_rev(t_recu **rec);
 t_recu  *end_list(t_recu *list);
 char    type_file(struct stat *buff);
-void    pars_sigle(t_option op, char *file, struct stat *buff);
+void    pars_sigle(t_recu **list, t_option op, char *file, struct stat *buff);
 int   check_sigle(char **av, int i, struct stat *buff);
 void    sigle_file(char **av, int i, struct stat *buff, t_option op);
+void    parse_path(char **av, t_option op, int i, int n);
+void    putls_l(t_recu *tmp, t_option op);
+void max_size(t_recu *recu, t_max *max, t_option op);
+void    ls_error(char *s, int n);
+
 
 # endif

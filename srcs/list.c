@@ -38,6 +38,8 @@ void    init_rev(t_recu **rec)
     t_recu *tmp;
     t_recu *prev;
 
+    if (!*rec)
+        return ;
     tmp = *rec;
     while (tmp->next)
     {
@@ -51,21 +53,29 @@ int   check_sigle(char **av, int i, struct stat *buff)
 {
     while (av[i])
     {
-        lstat(av[i], buff);
+        if (lstat(av[i], buff) < 0)
+            ls_error(av[i], -1);
         if (type_file(buff) == 'l' || type_file(buff) == '-')
             return (1);
         i++;
     }
-    return (1);
+    return (0);
 }
 
 void    sigle_file(char **av, int i, struct stat *buff, t_option op)
 {
+    t_recu *list;
+
+    list = NULL;
     while (av[i])
     {
-        lstat(av[i], buff);
-        if (type_file(buff) == 'l' || type_file(buff) == '-')
-            pars_sigle(op, av[i], buff);
+        if (lstat(av[i], buff) < 0)
+            ls_error(av[i], -1);
+        if ((type_file(buff) == 'l') || type_file(buff) == '-')
+            pars_sigle(&list, op, av[i], buff);
         i++;
     }
+    init_rev(&list);
+    display(list, op);
+    free_list(&list);
 }

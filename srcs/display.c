@@ -13,17 +13,13 @@
 
 # include "ft_ls.h"
 
-static void max_size(t_recu *recu, t_max *max)
+void max_size(t_recu *recu, t_max *max, t_option op)
 {
     t_recu *tmp;
 
     tmp = recu;
-    (*max).s_max = 1;
-    (*max).l_max = 1;
-    (*max).g_max = 1;
-    (*max).u_max = 1;
-    (*max).mi_max = 1;
-    (*max).t_block = 0;
+    *max = (t_max){.s_max = 1, .l_max = 1, .g_max = 1, .u_max = 1,
+    .mi_max = 1, .ma_max = 1, .t_block = 0};
     while (tmp)
     {
         if (ft_intsize(tmp->size) > (*max).s_max)
@@ -36,63 +32,20 @@ static void max_size(t_recu *recu, t_max *max)
             (*max).u_max = ft_strlen(tmp->user);
         if (ft_intsize(tmp->minor) > (*max).mi_max)
             (*max).mi_max = ft_intsize(tmp->minor);
+        if (ft_intsize(tmp->major) > (*max).ma_max)
+            (*max).ma_max = ft_intsize(tmp->major);
+        if ((int)ft_strlen(tmp->group) > (*max).g_max)
+            (*max).g_max = ft_strlen(tmp->group);
         (*max).t_block += tmp->block;
-        tmp = tmp->next;
+        tmp = (op.r ? tmp->prev : tmp->next);
     }
 }
 
-static void    put_min_maj(t_recu *rec, t_max max)
-{
-    if (rec->perm[0] == 'b' || rec->perm[0] == 'c')
-    {
-        ft_putnbr(rec->major);
-        ft_putspace(max.mi_max - ft_intsize(rec->major) + 2);
-        ft_putchar(',');
-        ft_putnbr(rec->minor);
-    }
-
-}
-
-static void    putls_l(t_recu *tmp, t_option op)
-{
-    t_max max;
-
-    max_size(tmp, &max);
-    if (!tmp->single)
-    {
-        ft_putstr("total ");
-        ft_putnbr(max.t_block);
-        write(1, "\n", 1);
-    }
-    while (tmp)
-    {
-        ft_putstr(tmp->perm);
-        ft_putspace(max.l_max - ft_intsize(tmp->link) + 2);
-        ft_putnbr(tmp->link);
-        write(1, " ", 1);
-        ft_putstr(tmp->user);
-        ft_putspace(max.u_max - ft_strlen(tmp->user) + 2);
-        ft_putstr(tmp->group);
-        ft_putspace(max.s_max - ft_intsize(tmp->size) + 2);
-        if (tmp->perm[0] != 'b' && tmp->perm[0] != 'c')
-            ft_putnbr(tmp->size);
-        else
-            put_min_maj(tmp, max);
-        write(1, " ", 1);
-        ft_putstr(tmp->date);
-        write(1, " ", 1);
-        ft_putendl(tmp->name);
-        if (op.r == 1)
-            tmp = tmp->prev;
-        else
-            tmp = tmp->next;
-    }
-}
 
 void    display(t_recu *r, t_option op)
 {
     t_recu *tmp;
-
+    
     if (op.r == 1)
         tmp = end_list(r);
     else
@@ -103,10 +56,8 @@ void    display(t_recu *r, t_option op)
         while (tmp)
         {
             ft_putendl(tmp->name);
-            if (op.r == 1)
-                tmp = tmp->prev;
-            else
-                tmp = tmp->next;
+            tmp = (op.r ? tmp->prev : tmp->next);
+
         }
     if (op.r_rec == 1)
         recu_path(op, r);

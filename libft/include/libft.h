@@ -71,6 +71,7 @@ char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_strrev(char *str);
 int					ft_strcchr(char *str, char c);
+int					ft_avlen(char **av);
 
 /*
 ** Print

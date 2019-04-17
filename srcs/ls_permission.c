@@ -53,13 +53,18 @@ char    type_file(struct stat *buff)
 
 void    other(t_recu *rec, struct stat *buff)
 {
+    if (!buff)
+        exit(0);
     rec->link = buff->st_nlink;
     rec->size = buff->st_size;
     rec->time = buff->st_mtime;
     rec->minor = minor(buff->st_rdev);
     rec->major = major(buff->st_rdev);
-    rec->user = getpwuid(buff->st_uid)->pw_name;
-    rec->group = getgrgid(buff->st_gid)->gr_name;
+    if (getpwuid(buff->st_uid) && getgrgid(buff->st_gid))
+    {
+        rec->user =  getpwuid(buff->st_uid)->pw_name;
+        rec->group = getgrgid(buff->st_gid)->gr_name;
+    }
     rec->date = ft_strsub(ctime(&buff->st_mtime), 4, 12);
 
 }
