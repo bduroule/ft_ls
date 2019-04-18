@@ -49,6 +49,7 @@ void    parse_path(char **av, t_option op, int i, int n);
 void    putls_l(t_recu *tmp, t_option op);
 void max_size(t_recu *recu, t_max *max, t_option op);
 void    ls_error(char *s, int n);
+char *color_name(t_recu *tmp, char *str);
 
 
 # endif

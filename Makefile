@@ -32,7 +32,9 @@ SRC_NAME = 	main.c 			\
 			display.c		\
 			ls_permission.c	\
 			list_sort.c		\
-			list.c
+			list.c			\
+			browse.c		\
+			display_ls_l.c
 
 # ft library
 FT        = ./libft/

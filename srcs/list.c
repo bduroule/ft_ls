@@ -26,6 +26,8 @@ void    free_list(t_recu **list)
 
     while ((*list))
     {
+        free((*list)->group);
+        free((*list)->user);
         free((*list)->date);
         tmp = (*list)->next;
         free((*list));

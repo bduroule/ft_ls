@@ -21,8 +21,8 @@ void    rev_parth(t_index index, t_option op, char **av, struct stat *buff)
     index.j = ft_avlen(av) - 1;
     while (index.i < index.j)
     {
-        if (!(lstat(av[index.j], buff)))
-            perror("error : ");
+        lstat(av[index.j], buff);
+           // perror("error : ");
         if ((type_file(buff) == 'l' && op.l) || type_file(buff) == '-')
             ;
         else

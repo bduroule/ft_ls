@@ -17,7 +17,7 @@ void    recu_path(t_option op, t_recu *r)
 {
     t_recu  *tmp;
 
-    tmp = r;
+    tmp = (op.r ? end_list(r) : r);
     while (tmp)
     {
         if (tmp->perm[0] == 'd')
@@ -27,7 +27,7 @@ void    recu_path(t_option op, t_recu *r)
             ft_putendl(":");
             read_path(op, tmp->right, tmp->path);
         }
-        tmp = tmp->next;
+        tmp = (op.r ? tmp->prev : tmp->next);
     }
 }
 
@@ -60,11 +60,14 @@ void    other(t_recu *rec, struct stat *buff)
     rec->time = buff->st_mtime;
     rec->minor = minor(buff->st_rdev);
     rec->major = major(buff->st_rdev);
-    if (getpwuid(buff->st_uid) && getgrgid(buff->st_gid))
-    {
-        rec->user =  getpwuid(buff->st_uid)->pw_name;
-        rec->group = getgrgid(buff->st_gid)->gr_name;
-    }
+    if (getpwuid(buff->st_uid))
+        rec->user =  ft_strdup(getpwuid(buff->st_uid)->pw_name);
+    else
+        rec->user = ft_itoa(buff->st_uid);
+    if (getgrgid(buff->st_gid))
+        rec->group = ft_strdup(getgrgid(buff->st_gid)->gr_name);
+    else
+        rec->group = ft_itoa(buff->st_gid);
     rec->date = ft_strsub(ctime(&buff->st_mtime), 4, 12);
 
 }

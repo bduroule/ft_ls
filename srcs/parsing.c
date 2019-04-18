@@ -78,7 +78,7 @@ void    read_path(t_option op, t_recu *list, char *path)
     i = 1;
     if (!(dir = opendir(path)))
     {
-        write(1, "coucou", 6);
+        write(1, "ls : ", 6);
         perror(path);
         return ;
     }
