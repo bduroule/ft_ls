@@ -29,27 +29,52 @@
 #include <stdio.h>
 /**/
 
-# define OPTION "artRlS"
+# define OPTION "artRlSG"
 
-void    read_path(t_option op, t_recu *list, char *path);
-void    permision(t_recu *rec, struct stat *buff);
-void    other(t_recu *rec, struct stat *buff);
+/*
+**  Display
+*/
+char    *color_name(t_recu *tmp, char *str, t_option op);
+void    putls_l(t_recu *tmp, t_option op);
 void    display(t_recu *r, t_option op);
-void    recu_path(t_option op, t_recu *r);
-void    free_list(t_recu **list);
+
+/*
+**  Parcing ls -l
+*/
+
+void    other(t_recu *rec, struct stat *buff);
+void    permision(t_recu *rec, struct stat *buff);
+void    max_size(t_recu *recu, t_max *max, t_option op);
+char    type_file(struct stat *buff);
+
+/*
+**  Parcing single
+*/
+
+void    sigle_file(char **av, int i, struct stat *buff, t_option op);
+void    pars_sigle(t_recu **list, t_option op, char *file, struct stat *buff);
+int     check_sigle(char **av, int i, struct stat *buff);
+
+/*
+**  Parcing path
+*/
+void    read_path(t_option op, t_recu *list, char *path);
+void    parse_path(char **av, t_option op, int i, int n);
+
+/*
+**  Sort
+*/
 t_recu  *asci_list(t_recu *rec, t_recu *new);
 void	ls_list_insert_sort( t_recu **head, t_recu *newl, t_option op);
 void    init_rev(t_recu **rec);
+
+/*
+**  Other
+*/
+void    recu_path(t_option op, t_recu *r);
+void    free_list(t_recu **list);
 t_recu  *end_list(t_recu *list);
-char    type_file(struct stat *buff);
-void    pars_sigle(t_recu **list, t_option op, char *file, struct stat *buff);
-int   check_sigle(char **av, int i, struct stat *buff);
-void    sigle_file(char **av, int i, struct stat *buff, t_option op);
-void    parse_path(char **av, t_option op, int i, int n);
-void    putls_l(t_recu *tmp, t_option op);
-void max_size(t_recu *recu, t_max *max, t_option op);
 void    ls_error(char *s, int n);
-char *color_name(t_recu *tmp, char *str);
 
 
 # endif

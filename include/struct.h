@@ -24,6 +24,7 @@ typedef struct	s_option
 	short int	l;
 	short int	t;
 	short int	s_size;
+	short int	g_color;
 	char		*path;
 }            	t_option;
 

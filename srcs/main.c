@@ -26,13 +26,20 @@ static void init_option(t_option *op)
 
 void    ls_error(char *s, int n)
 {
+    if (n == 0)
+    {
+        ft_putstr_fd("ft_ls: illegal option -- ", 2);
+        ft_putchar_fd(s[1], 2);
+        write(2, "\n", 1);
+        write(1, "usage: ./ft_ls [-artRlSG] [file ...]\n", 37);
+        exit(0);
+    }
     if (n == -1)
     {
-        ft_putstr_fd("ls : ", 2);
-        //ft_putstr_fd(s, 2);
+        ft_putstr_fd("ft_ls: ", 2);
         perror(s);
-        exit(EXIT_FAILURE);
     }
+    //exit(EXIT_FAILURE);
 }
 
 void    ls_usage(void)
@@ -58,7 +65,7 @@ static int parse_option(char **av, t_option *op, int i)
             while (av[i][++j])
             {
                 if (!(ft_strchr(OPTION, av[i][j])))
-                    ls_usage();
+                    ls_error(av[i], 0);
                 if (av[i][j] == 'l')
                     (*op).l = 1;
                 if (av[i][j] == 'a')
@@ -71,6 +78,8 @@ static int parse_option(char **av, t_option *op, int i)
                     (*op).t = 1;
                 if (av[i][j] == 'S')
                     (*op).s_size = 1;
+                if (av[i][j] == 'G')
+                    (*op).g_color = 1;
             }
         }
     }

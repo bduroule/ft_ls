@@ -109,7 +109,7 @@ void    putls_l(t_recu *tmp, t_option op)
         put_size(tmp, wow, max);
         ft_strcat(wow, tmp->date);
         ft_strcat(wow, " ");
-        color_name(tmp, wow);
+        color_name(tmp, wow, op);
         if (tmp->perm[0] == 'l')
             put_link(tmp, wow);
         ft_strcat(wow, "\n");;

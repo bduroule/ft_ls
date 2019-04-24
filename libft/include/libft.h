@@ -86,6 +86,7 @@ void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 void    			ft_putspace(int n);
+void				ft_putendl_color(const char *s, const char *color);
 
 /*
 ** Maths
@@ -131,5 +132,6 @@ int					ft_isascii(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 void				ft_foreach(int *tab, int length, void (*f)(int));
+char				*color_txt(char *str, char *name, char *color);
 
 #endif
