@@ -23,37 +23,47 @@
 # include <errno.h>
 # include "../libft/include/libft.h"
 # include "struct.h"
-# include <limits.h>
+#include <sys/types.h>
+#include <sys/xattr.h>
+#include <sys/types.h>
+#include <sys/acl.h>
+#include <sys/ioctl.h>
 
 /**/
 #include <stdio.h>
 /**/
 
-# define OPTION "artRlSG"
+enum {MALLOC, USAGE, ERRNO};
+
+# define OPTION "artRlSG1"
 
 /*
 **  Display
 */
 char    *color_name(t_recu *tmp, char *str, t_option op);
-void    putls_l(t_recu *tmp, t_option op);
+void    putls_l(t_recu *tmp, t_option op, t_max max);
 void    display(t_recu *r, t_option op);
 
 /*
 **  Parcing ls -l
 */
 
-void    other(t_recu *rec, struct stat *buff);
-void    permision(t_recu *rec, struct stat *buff);
+void    other(t_recu *rec, t_stat *buff);
+void    permision(t_recu *rec, t_stat *buff);
 void    max_size(t_recu *recu, t_max *max, t_option op);
-char    type_file(struct stat *buff);
+char    type_file(t_stat *buff);
+void	max_len(t_recu *tmp, t_max *max);
+void	ls_l_str(t_recu *tmp, char *str, t_max max);
+char	*put_size(t_recu *tmp, char *s, t_max m);
+char	*color_name(t_recu *tmp, char *str, t_option op);
 
 /*
 **  Parcing single
 */
 
-void    sigle_file(char **av, int i, struct stat *buff, t_option op);
-void    pars_sigle(t_recu **list, t_option op, char *file, struct stat *buff);
-int     check_sigle(char **av, int i, struct stat *buff);
+void    sigle_file(char **av, int i, t_stat *buff, t_option op);
+void    pars_sigle(t_recu **list, t_option op, char *file, t_stat *buff);
+int     check_sigle(char **av, int i, t_stat *buff);
 
 /*
 **  Parcing path
@@ -75,6 +85,6 @@ void    recu_path(t_option op, t_recu *r);
 void    free_list(t_recu **list);
 t_recu  *end_list(t_recu *list);
 void    ls_error(char *s, int n);
-
+void	put_name(t_recu *tmp, t_option op);
 
 # endif

@@ -34,7 +34,9 @@ SRC_NAME = 	main.c 			\
 			list_sort.c		\
 			list.c			\
 			browse.c		\
-			display_ls_l.c
+			display_ls_l.c	\
+			ls_l_str.c		\
+			ls_color.c
 
 # ft library
 FT        = ./libft/
