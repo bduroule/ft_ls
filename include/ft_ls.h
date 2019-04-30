@@ -86,5 +86,7 @@ void    free_list(t_recu **list);
 t_recu  *end_list(t_recu *list);
 void    ls_error(char *s, int n);
 void	put_name(t_recu *tmp, t_option op);
+char	**sort_av(int ac, char **av, int index);
+t_recu	*n_next(t_recu **list, int n);
 
 # endif

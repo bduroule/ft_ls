@@ -72,6 +72,7 @@ char				**ft_strsplit(char const *s, char c);
 char				*ft_strrev(char *str);
 int					ft_strcchr(char *str, char c);
 int					ft_avlen(char **av);
+void				ft_avswap(char **a, char **b);
 
 /*
 ** Print
@@ -100,6 +101,7 @@ int					ft_is_prime(int nb);
 void				ft_swap(int *a, int *b);
 int					*ft_range(int min, int max);
 int					ft_sqrt(int nb);
+int 				ft_up_rounded(double n);
 
 /*
 ** List

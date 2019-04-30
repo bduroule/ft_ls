@@ -28,9 +28,9 @@ void		ls_error(char *s, int n)
 	if (n == USAGE)
 	{
 		ft_putstr_fd("ft_ls: illegal option -- ", 2);
-		ft_putchar_fd(s[1], 2);
+		ft_putstr_fd(s, 2);
 		write(2, "\n", 1);
-		write(1, "usage: ./ft_ls [-artRlSG1] [file ...]\n", 37);
+		write(2, "usage: ./ft_ls [-artRlSG1] [file ...]\n", 38);
 	}
 	if (n == ERRNO || n == MALLOC)
 	{
@@ -78,7 +78,7 @@ static int	parse_option(char **av, t_option *op, int i)
 			while (av[i][++j])
 			{
 				if (!(ft_strchr(OPTION, av[i][j])))
-					ls_error(av[i], USAGE);
+					ls_error(&av[i][j], USAGE);
 				option(op, av, i, j);
 			}
 		}
@@ -91,10 +91,10 @@ int			main(int ac, char **av)
 	t_option	op;
 	int			i;
 
-	(void)ac;
 	i = -1;
 	init_option(&op);
 	i = parse_option(av, &op, i);
+	av = sort_av(ac, av, i);
 	parse_path(av, op, i, (ac - 1) - i);
 	return (0);
 }

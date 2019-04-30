@@ -66,6 +66,8 @@ typedef struct 			s_max
 	short int			n_max;
 	short int			t_max;
 	short int			t_block;
+	short int			c_max;
+	int					n_name;
 }						t_max;
 
 typedef struct			s_index

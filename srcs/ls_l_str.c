@@ -13,6 +13,42 @@
 
 #include "ft_ls.h"
 
+char		**sort_av(int ac, char **av, int index)
+{
+	int i;
+	int j;
+	int d;
+
+	i = index + 1;
+	d = ac - 1;
+	while (i < ac - 1)
+	{
+		j = i + 1;
+		while (j < ac)
+		{
+			if (ft_strcmp(av[i], av[j]) < 0)
+				ft_avswap(&av[i], &av[j]);
+			j++;
+		}
+		i++;
+	}
+	i = index + 1;
+	while (d > i)
+	{
+		ft_avswap(&av[i], &av[d]);
+		i++;
+		d--;
+	}
+	return (av);
+}
+
+t_recu	*n_next(t_recu **list, int n)
+{
+	while (n-- && *list)
+		*list = (*list)->next;
+	return (*list);
+}
+
 void	max_len(t_recu *tmp, t_max *max)
 {
 	if (ft_intsize(tmp->size) > (*max).s_max)
