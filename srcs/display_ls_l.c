@@ -86,8 +86,10 @@ void			putls_l(t_recu *tmp, t_option op, t_max max)
 		put_total(max);
 	while (tmp)
 	{
-		ls_l_str(tmp, wow, max);
+		ls_l_str(tmp, wow, max, op);
 		color_name(tmp, wow, op);
+		if (op.f_f || op.p)
+		p_cat(tmp, wow, op);
 		if (tmp->perm[0] == 'l')
 			put_link(tmp, wow);
 		ft_strcat(wow, "\n");

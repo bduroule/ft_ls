@@ -27,11 +27,11 @@ void			pars_sigle(t_recu **rec, t_option op, char *file, t_stat *buff)
 	r->block = buff->st_blocks;
 	r->single = 1;
 	permision(r, buff);
-	other(r, buff);
+	other(r, buff, op);
 	ls_list_insert_sort(rec, r, op);
 }
 
-static t_recu	*file_init(t_dirent *rd, t_recu *rec, char *path)
+static t_recu	*file_init(t_dirent *rd, t_recu *rec, char *path, t_option op)
 {
 	t_stat *buff;
 
@@ -46,7 +46,7 @@ static t_recu	*file_init(t_dirent *rd, t_recu *rec, char *path)
 	ft_strcpy(rec->name, rd->d_name);
 	rec->block = buff->st_blocks;
 	permision(rec, buff);
-	other(rec, buff);
+	other(rec, buff, op);
 	free(buff);
 	return (rec);
 }
@@ -54,15 +54,29 @@ static t_recu	*file_init(t_dirent *rd, t_recu *rec, char *path)
 static int		parse_file(t_dirent *rd, t_recu **rec, char *path, t_option op)
 {
 	t_recu *r;
+	t_recu *tmp;
 
 	if (!(r = (t_recu *)malloc(sizeof(t_recu))))
 		ls_error(path, MALLOC);
-	r = file_init(rd, r, path);
+	r = file_init(rd, r, path, op);
 	r->single = 0;
 	r->right = NULL;
 	r->next = NULL;
 	r->prev = NULL;
-	ls_list_insert_sort(rec, r, op);
+	if (op.f)
+	{
+		tmp = *rec;
+		if (*rec == NULL)
+			*rec = r;
+		else
+		{
+			while (tmp->next)
+				tmp = tmp->next;
+			tmp->next = r;
+		}
+	}
+	else
+		ls_list_insert_sort(rec, r, op);
 	return (1);
 }
 

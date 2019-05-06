@@ -42,14 +42,7 @@ char		**sort_av(int ac, char **av, int index)
 	return (av);
 }
 
-t_recu	*n_next(t_recu **list, int n)
-{
-	while (n-- && *list)
-		*list = (*list)->next;
-	return (*list);
-}
-
-void	max_len(t_recu *tmp, t_max *max)
+void	max_len(t_recu *tmp, t_max *max, t_option op)
 {
 	if (ft_intsize(tmp->size) > (*max).s_max)
 		(*max).s_max = ft_intsize(tmp->size);
@@ -69,13 +62,23 @@ void	max_len(t_recu *tmp, t_max *max)
 		(*max).g_max = ft_strlen(tmp->group);
 	if ((int)ft_strlen(tmp->name) > (*max).n_max)
 		(*max).n_max = ft_strlen(tmp->name);
+	if (op.i && ft_intsize(tmp->neod) > (*max).i_max)
+		(*max).i_max = ft_intsize(tmp->neod);
 	(*max).t_block += tmp->block;
 }
 
-void	ls_l_str(t_recu *tmp, char *str, t_max max)
+void	ls_l_str(t_recu *tmp, char *str, t_max max, t_option op)
 {
 	char	*itoatmp;
 
+	if (op.i)
+	{
+		itoatmp = ft_itoa(tmp->neod);
+		ft_strcpy(str, itoatmp);
+		rspace(max.i_max - ft_intsize(tmp->neod) + 1, str);
+		ft_strcat(str, tmp->perm);
+	}
+	if (!op.i)
 	ft_strcpy(str, tmp->perm);
 	rspace(max.l_max - ft_intsize(tmp->link) + 1, str);
 	if (!(itoatmp = ft_itoa(tmp->link)))
@@ -83,9 +86,13 @@ void	ls_l_str(t_recu *tmp, char *str, t_max max)
 	ft_strcat(str, itoatmp);
 	ft_strcat(str, " ");
 	ft_strcat(str, tmp->user);
-	rspace(max.u_max - ft_strlen(tmp->user) + 2, str);
-	ft_strcat(str, tmp->group);
-	rspace(max.g_max - ft_strlen(tmp->group) + 1, str);
+	rspace(max.u_max - ft_strlen(tmp->user) + 1, str);
+	if (!op.o)
+	{
+		ft_strcat(str, " ");
+		ft_strcat(str, tmp->group);
+		rspace(max.g_max - ft_strlen(tmp->group) + 1, str);
+	}
 	put_size(tmp, str, max);
 	ft_strcat(str, tmp->date);
 	ft_strcat(str, " ");

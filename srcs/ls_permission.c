@@ -60,23 +60,24 @@ char		type_file(struct stat *buff)
 		return ('-');
 }
 
-void		other(t_recu *rec, struct stat *buff)
+void		other(t_recu *rec, t_stat *buff, t_option op)
 {
 	if (!buff)
 		exit(EXIT_FAILURE);
 	rec->link = buff->st_nlink;
+	rec->neod =  buff->st_ino;
 	rec->size = buff->st_size;
 	rec->time = buff->st_mtime;
 	rec->minor = minor(buff->st_rdev);
 	rec->major = major(buff->st_rdev);
-	if (getpwuid(buff->st_uid))
+	if (getpwuid(buff->st_uid) && !op.n)
 	{
 		if (!(rec->user = ft_strdup(getpwuid(buff->st_uid)->pw_name)))
 			ls_error(rec->path, MALLOC);
 	}
 	else if (!(rec->user = ft_itoa(buff->st_uid)))
 		ls_error(rec->path, MALLOC);
-	if (getgrgid(buff->st_gid))
+	if (getgrgid(buff->st_gid) && !op.n)
 	{
 		if (!(rec->group = ft_strdup(getgrgid(buff->st_gid)->gr_name)))
 			ls_error(rec->path, MALLOC);

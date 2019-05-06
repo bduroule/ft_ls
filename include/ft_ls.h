@@ -35,7 +35,7 @@
 
 enum {MALLOC, USAGE, ERRNO};
 
-# define OPTION "artRlSG1"
+# define OPTION "artRlSG1xnoimfFp"
 
 /*
 **  Display
@@ -43,17 +43,19 @@ enum {MALLOC, USAGE, ERRNO};
 char    *color_name(t_recu *tmp, char *str, t_option op);
 void    putls_l(t_recu *tmp, t_option op, t_max max);
 void    display(t_recu *r, t_option op);
+void    put_one(t_recu *list, t_max max, t_option op);
+void    put_m(t_recu *list, t_max max, t_option op);
 
 /*
 **  Parcing ls -l
 */
 
-void    other(t_recu *rec, t_stat *buff);
+void    other(t_recu *rec, t_stat *buff, t_option op);
 void    permision(t_recu *rec, t_stat *buff);
 void    max_size(t_recu *recu, t_max *max, t_option op);
 char    type_file(t_stat *buff);
-void	max_len(t_recu *tmp, t_max *max);
-void	ls_l_str(t_recu *tmp, char *str, t_max max);
+void	max_len(t_recu *tmp, t_max *max, t_option op);
+void	ls_l_str(t_recu *tmp, char *str, t_max max, t_option op);
 char	*put_size(t_recu *tmp, char *s, t_max m);
 char	*color_name(t_recu *tmp, char *str, t_option op);
 
@@ -87,6 +89,7 @@ t_recu  *end_list(t_recu *list);
 void    ls_error(char *s, int n);
 void	put_name(t_recu *tmp, t_option op);
 char	**sort_av(int ac, char **av, int index);
-t_recu	*n_next(t_recu **list, int n);
+t_recu	*n_next(t_recu *list, int n);
+void p_cat(t_recu *list, char *str, t_option op);
 
 # endif

@@ -21,6 +21,10 @@ static void	init_option(t_option *op)
 	(*op).l = 0;
 	(*op).t = 0;
 	(*op).s_size = 0;
+	(*op).x = 0;
+	(*op).o = 0;
+	(*op).i = 0;
+	(*op).m = 0;
 }
 
 void		ls_error(char *s, int n)
@@ -30,7 +34,7 @@ void		ls_error(char *s, int n)
 		ft_putstr_fd("ft_ls: illegal option -- ", 2);
 		ft_putstr_fd(s, 2);
 		write(2, "\n", 1);
-		write(2, "usage: ./ft_ls [-artRlSG1] [file ...]\n", 38);
+		write(2, "usage: ./ft_ls [-artRlSG1xnoimfFp] [file ...]\n", 46);
 	}
 	if (n == ERRNO || n == MALLOC)
 	{
@@ -59,6 +63,25 @@ static void	option(t_option *op, char **av, int i, int j)
 		(*op).g_color = 1;
 	if (av[i][j] == '1')
 		(*op).one = 1;
+	if (av[i][j] == 'x')
+		(*op).x = 1;
+	if (av[i][j] == 'n')
+		(*op).n = 1;
+	if (av[i][j] == 'o')
+		(*op).o = 1;
+	if (av[i][j] == 'i')
+		(*op).i = 1;
+	if(av[i][j] == 'm')
+		(*op).m = 1;
+	if (av[i][j] == 'f')
+	{
+		(*op).a = 1;
+		(*op).f = 1;
+	}
+	if (av[i][j] == 'F')
+		(*op).f_f = 1;
+	if (av[i][j] == 'p')
+		(*op).p = 1;
 }
 
 static int	parse_option(char **av, t_option *op, int i)
@@ -67,6 +90,7 @@ static int	parse_option(char **av, t_option *op, int i)
 	int c;
 
 	i = 0;
+	c = 0;
 	while (av[++i])
 	{
 		j = 0;
@@ -94,7 +118,8 @@ int			main(int ac, char **av)
 	i = -1;
 	init_option(&op);
 	i = parse_option(av, &op, i);
-	av = sort_av(ac, av, i);
+	if (!op.f)
+		av = sort_av(ac, av, i);
 	parse_path(av, op, i, (ac - 1) - i);
 	return (0);
 }

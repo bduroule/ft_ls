@@ -30,6 +30,14 @@ typedef struct			s_option
 	short int			s_size;
 	short int			g_color;
 	short int			one;
+	short int			x;
+	short int			n;
+	short int			o;
+	short int			i;
+	short int			m;
+	short int			f;
+	short int			f_f;
+	short int			p;
 	char				*path;
 }						t_option;
 
@@ -50,6 +58,7 @@ typedef struct			s_recu
 	int					minor;
 	int					major;
 	short int			single;
+	int					neod;
 	struct				s_recu *next;
 	struct				s_recu *prev;
 	struct				s_recu *right;
@@ -67,6 +76,8 @@ typedef struct 			s_max
 	short int			t_max;
 	short int			t_block;
 	short int			c_max;
+	short int			i_max;
+	int					te_max;
 	int					n_name;
 }						t_max;
 

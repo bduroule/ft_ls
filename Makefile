@@ -36,7 +36,8 @@ SRC_NAME = 	main.c 			\
 			browse.c		\
 			display_ls_l.c	\
 			ls_l_str.c		\
-			ls_color.c
+			ls_color.c		\
+			option.c
 
 # ft library
 FT        = ./libft/
@@ -50,7 +51,7 @@ OBJ	= $(addprefix $(OBJ_PATH), $(SRC_NAME:.c=.o))
 
 #compil
 CC = gcc
-CFLAGS =  -Wextra -Wall -g3 -ggdb3  $(INC_HDR)
+CFLAGS =  -Wextra -Wall  $(INC_HDR)
 
 all: $(NAME)
 
