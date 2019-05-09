@@ -13,12 +13,12 @@
 
 #include "../include/libft.h"
 
-int ft_avlen(char **av)
+int	ft_avlen(char **av)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (av[i])
-        i++;
-    return (i);
+	i = 0;
+	while (av[i])
+		i++;
+	return (i);
 }

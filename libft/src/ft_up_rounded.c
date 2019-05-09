@@ -13,7 +13,7 @@
 
 #include "../include/libft.h"
 
-int ft_up_rounded(double n)
+int	ft_up_rounded(double n)
 {
 	if ((double)(int)n != n)
 		n++;

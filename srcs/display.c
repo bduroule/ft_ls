@@ -13,27 +13,46 @@
 
 #include "ft_ls.h"
 
-char	*iterate_line(t_recu *list, t_max max, int nb, t_option op)
+void	recu_path(t_option op, t_recu *r)
 {
-	int i;
-	int c;
+	t_recu		*tmp;
+
+	tmp = (op.r ? end_list(r) : r);
+	while (tmp)
+	{
+		if (tmp->perm[0] == 'd' &&
+			(tmp->name[0] != '.' && tmp->name[1] != '.'))
+		{
+			ft_putchar('\n');
+			ft_putstr(tmp->path);
+			ft_putendl(":");
+			read_path(op, tmp->right, tmp->path);
+		}
+		tmp = (op.r ? tmp->prev : tmp->next);
+	}
+}
+
+char	*iterate_line(t_recu *list, t_max cmax, int nb, t_option op)
+{
+	int		i;
+	int		c;
 
 	c = 1;
 	i = 0;
 	while (list)
 	{
 		if (i == nb)
-		{	
+		{
 			if (op.i)
 			{
 				ft_putnbr(list->neod);
-				ft_putspace(max.i_max - ft_intsize(list->neod) + 1);
+				ft_putspace(cmax.i_max - ft_intsize(list->neod) + 1);
 			}
-			ft_putstr(list->name);
-			if (c < max.t_max && list->next)
-				ft_putspace(max.n_max - ft_strlen(list->name) + 1);
+			put_name(list, op);
+			if (c < (cmax.th_max) && list->next)
+				ft_putspace(cmax.n_max - ft_strlen(list->name) + 1);
 			c++;
-			nb += max.c_max;
+			nb += cmax.c_max;
 		}
 		i++;
 		list = list->next;
@@ -41,22 +60,22 @@ char	*iterate_line(t_recu *list, t_max max, int nb, t_option op)
 	return (NULL);
 }
 
-void	put_column(t_recu *list, t_max max, t_option op)
+void	put_column(t_recu *list, t_max cmax, t_option op)
 {
 	int		i;
 
 	i = -1;
-	while (++i < max.c_max)
+	while (++i < cmax.c_max)
 	{
-		iterate_line(list, max, i, op);
+		iterate_line(list, cmax, i, op);
 		ft_putchar('\n');
 	}
 }
 
-void	put_column_x(t_recu *list, t_max max, t_option op)
+void	put_column_x(t_recu *list, t_max cmax, t_option op)
 {
-	int i;
-	t_recu *tmp;
+	int		i;
+	t_recu	*tmp;
 
 	tmp = list;
 	i = 0;
@@ -65,13 +84,13 @@ void	put_column_x(t_recu *list, t_max max, t_option op)
 		if (op.i)
 		{
 			ft_putnbr(tmp->neod);
-			ft_putspace(max.i_max - ft_intsize(tmp->neod) + 1);
+			ft_putspace(cmax.i_max - ft_intsize(tmp->neod) + 1);
 		}
 		put_name(tmp, op);
-		if (i + 1 < max.t_max && tmp->next != NULL)
-			ft_putspace(max.n_max - ft_strlen(tmp->name) + 1);
+		if (i + 1 < cmax.th_max && tmp->next != NULL)
+			ft_putspace(cmax.n_max - ft_strlen(tmp->name) + 1);
 		i++;
-		if (i >= max.t_max)
+		if (i >= cmax.th_max)
 		{
 			write(1, "\n", 1);
 			i = 0;
@@ -81,52 +100,23 @@ void	put_column_x(t_recu *list, t_max max, t_option op)
 	write(1, "\n", 1);
 }
 
-void	max_size(t_recu *recu, t_max *max, t_option op)
-{
-	t_recu *tmp;
-	t_winsize term;
-	int count;
-
-	tmp = recu;
-	count = 0;
-	*max = (t_max){.s_max = 1, .l_max = 1, .g_max = 1, .u_max = 1, .c_max = 1,
-	.mi_max = -1, .ma_max = -1, .t_block = 0, .n_max = 1, .t_max = 1, .i_max = 0};
-	ioctl(0, TIOCGWINSZ, &term);
-	(*max).te_max = term.ws_col;
-	while (tmp)
-	{
-		if ((tmp->perm[0] == 'b' || tmp->perm[0] == 'c') && (*max).ma_max == -1
-		&& (*max).mi_max == -1)
-		{
-			(*max).mi_max = 1;
-			(*max).ma_max = 1;
-		}
-		max_len(tmp, max, op);
-		count++;
-		tmp = (op.r ? tmp->prev : tmp->next);
-	}
-	(*max).n_name = count;
-	(*max).t_max = (*max).te_max / ((*max).n_max + (*max).i_max + 1);
-	(*max).c_max = ft_up_rounded((double)(*max).n_name / (*max).t_max);
-}
-
 void	display(t_recu *r, t_option op)
 {
-	t_recu *tmp;
-	t_max max;
+	t_recu	*tmp;
+	t_max	cmax;
 
-	max_size(r, &max, op);
+	max_size(r, &cmax, op);
 	tmp = op.r ? end_list(r) : r;
 	if (op.one)
-		put_one(tmp, max, op);
+		put_one(tmp, cmax, op);
 	else if (op.m)
-		put_m(tmp, max, op);
+		put_m(tmp, cmax, op);
 	else if (op.x)
-		put_column_x(tmp, max, op);
+		put_column_x(tmp, cmax, op);
 	else if (op.l || op.n || op.o)
-		putls_l(tmp, op, max);
+		putls_l(tmp, op, cmax);
 	else
-		put_column(tmp, max, op);
+		put_column(tmp, cmax, op);
 	if (op.r_rec == 1)
 		recu_path(op, r);
 }

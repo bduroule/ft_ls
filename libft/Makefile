@@ -70,7 +70,7 @@ $(NAME): $(OBJ)
 obj:
 	@mkdir -p $(OBJ_PATH)
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c include/get_next_line.h include/libft.h
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "$(BLUE)>>Compiling $(WITHE) $< $(END)"
 

@@ -37,28 +37,30 @@ SRC_NAME = 	main.c 			\
 			display_ls_l.c	\
 			ls_l_str.c		\
 			ls_color.c		\
-			option.c
+			option.c		\
+			sort_param.c
 
 # ft library
 FT        = ./libft/
 FT_LIB    = $(addprefix $(FT),libft.a)
 FT_INC    = -I ./libft
 FT_LNK    = -L ./libft -l ft
-
+REQUIRED  = include/ft_ls.h include/struct.h libft/libft.a
 #add
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 OBJ	= $(addprefix $(OBJ_PATH), $(SRC_NAME:.c=.o))
 
 #compil
 CC = gcc
-CFLAGS =  -Wextra -Wall  $(INC_HDR)
+CFLAGS =  -Wextra -Wall -Werror $(INC_HDR)
 
-all: $(NAME)
+all: make_libft $(NAME)
 
-$(OBJ_PATH):
+make_libft:
+	@make -C libft/
+
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(REQUIRED)
 	@mkdir -p $(OBJ_PATH)
-
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c include/ft_ls.h include/struct.h | $(OBJ_PATH)
 	@$(CC) $(CFLAGS) $(FT_INC) -I $(INC_PATH)  -o $@ -c $<
 	@printf "$(BLUE)>>Compiling $(WITHE) $< $(END)"
 
@@ -66,7 +68,6 @@ $(NAME): $(OBJ)
 	@$(MAKE) -C libft
 	@$(CC) $(CFLAGS) $(OBJ) $(FT_LNK) -o $(NAME)
 	@printf "$(YELLOW)$(NAME)$(END)		$(GREEN)[compiled]$(END)\n"
-
 
 clean:
 	@rm -rf $(OBJ_PATH)

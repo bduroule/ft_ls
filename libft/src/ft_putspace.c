@@ -13,11 +13,11 @@
 
 #include "../include/libft.h"
 
-void    ft_putspace(int n)
+void	ft_putspace(int n)
 {
-    int i;
+	int i;
 
-    i = -1;
-    while (++i < n)
-        write(1, " ", 1);
+	i = -1;
+	while (++i < n)
+		write(1, " ", 1);
 }

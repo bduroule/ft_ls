@@ -11,8 +11,8 @@
 /*                                                        /                   */
 /* ************************************************************************** */
 
-# ifndef STRUCT_H
-#define STRUCT_H
+#ifndef STRUCT_H
+# define STRUCT_H
 
 # include <limits.h>
 
@@ -38,6 +38,8 @@ typedef struct			s_option
 	short int			f;
 	short int			f_f;
 	short int			p;
+	short int			u;
+	short int			c;
 	char				*path;
 }						t_option;
 
@@ -46,7 +48,7 @@ typedef struct			s_recu
 	int					id;
 	char				path[PATH_MAX];
 	char				perm[12];
-	int 				link;
+	int					link;
 	char				*user;
 	char				*group;
 	long int			size;
@@ -59,12 +61,12 @@ typedef struct			s_recu
 	int					major;
 	short int			single;
 	int					neod;
-	struct				s_recu *next;
-	struct				s_recu *prev;
-	struct				s_recu *right;
+	struct s_recu		*next;
+	struct s_recu		*prev;
+	struct s_recu		*right;
 }						t_recu;
 
-typedef struct 			s_max
+typedef struct			s_max
 {
 	short int			l_max;
 	short int			s_max;
@@ -73,7 +75,7 @@ typedef struct 			s_max
 	short int			mi_max;
 	short int			ma_max;
 	short int			n_max;
-	short int			t_max;
+	short int			th_max;
 	short int			t_block;
 	short int			c_max;
 	short int			i_max;
@@ -88,4 +90,4 @@ typedef struct			s_index
 	int					n;
 }						t_index;
 
-# endif
+#endif

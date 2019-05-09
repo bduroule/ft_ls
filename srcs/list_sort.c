@@ -36,6 +36,9 @@ static t_recu	*ls_sort_size(t_recu **prev, t_recu **head, t_recu *newl)
 	curr = *head;
 	while (curr != NULL && curr->size > newl->size)
 		ls_sort_swap(prev, &curr);
+	while (curr && curr->size == newl->size && (ft_strcmp(curr->name,
+	newl->name) < 0))
+		ls_sort_swap(prev, &curr);
 	return (curr);
 }
 
@@ -45,6 +48,9 @@ static t_recu	*ls_sort_time(t_recu **prev, t_recu **head, t_recu *newl)
 
 	curr = *head;
 	while (curr != NULL && curr->time > newl->time)
+		ls_sort_swap(prev, &curr);
+	while (curr && curr->time == newl->time && (ft_strcmp(curr->name,
+	newl->name) < 0))
 		ls_sort_swap(prev, &curr);
 	return (curr);
 }

@@ -15,29 +15,16 @@
 
 static char	get_acl(t_recu *r)
 {
+	acl_t	acl;
+
 	if (listxattr(r->path, NULL, 0, XATTR_NOFOLLOW) > 0)
 		return ('@');
-	if (acl_get_link_np(r->path, ACL_TYPE_EXTENDED))
-		return ('+');
-	return (' ');
-}
-
-void		recu_path(t_option op, t_recu *r)
-{
-	t_recu *tmp;
-
-	tmp = (op.r ? end_list(r) : r);
-	while (tmp)
+	if ((acl = acl_get_link_np(r->path, ACL_TYPE_EXTENDED)))
 	{
-		if (tmp->perm[0] == 'd')
-		{
-			ft_putchar('\n');
-			ft_putstr(tmp->path);
-			ft_putendl(":");
-			read_path(op, tmp->right, tmp->path);
-		}
-		tmp = (op.r ? tmp->prev : tmp->next);
+		acl_free(acl);
+		return ('+');
 	}
+	return (' ');
 }
 
 char		type_file(struct stat *buff)
@@ -65,7 +52,7 @@ void		other(t_recu *rec, t_stat *buff, t_option op)
 	if (!buff)
 		exit(EXIT_FAILURE);
 	rec->link = buff->st_nlink;
-	rec->neod =  buff->st_ino;
+	rec->neod = buff->st_ino;
 	rec->size = buff->st_size;
 	rec->time = buff->st_mtime;
 	rec->minor = minor(buff->st_rdev);

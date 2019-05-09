@@ -51,7 +51,7 @@ void		init_rev(t_recu **rec)
 	}
 }
 
-int			check_sigle(char **av, int i, struct stat *buff)
+int			check_sigle(char **av, int i, t_stat *buff)
 {
 	int c;
 

@@ -13,9 +13,9 @@
 
 #include "../include/libft.h"
 
-void    ft_putendl_color(const char *s, const char *color)
+void	ft_putendl_color(const char *s, const char *color)
 {
-    ft_putstr(color);
-    ft_putstr(s);
-    ft_putendl("\e[39;49m");
+	ft_putstr(color);
+	ft_putstr(s);
+	ft_putendl("\e[39;49m");
 }

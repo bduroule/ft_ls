@@ -13,6 +13,16 @@
 
 #include "ft_ls.h"
 
+void	put_name2(t_recu *tmp)
+{
+	if (tmp->perm[3] == 's')
+		ft_putstr_color(tmp->name, "\e[30;41m");
+	else if (tmp->perm[6] == 's')
+		ft_putstr_color(tmp->name, "\e[30;46m");
+	else if (tmp->perm[9] == 't')
+		ft_putstr_color(tmp->name, "\e[31m");
+}
+
 void	put_name(t_recu *tmp, t_option op)
 {
 	if (!op.g_color)
@@ -30,14 +40,10 @@ void	put_name(t_recu *tmp, t_option op)
 		ft_putstr_color(tmp->name, "\e[43;30m");
 	else if (tmp->perm[0] == 'd')
 		ft_putstr_color(tmp->name, "\e[96m");
-	else if (tmp->perm[3] == 's')
-		ft_putstr_color(tmp->name, "\e[30;41m");
-	else if (tmp->perm[6] == 's')
-		ft_putstr_color(tmp->name, "\e[30;46m");
-	else if (tmp->perm[9] == 't')
-		ft_putstr_color(tmp->name, "\e[31m");
+	else if (tmp->perm[3] == 's' || tmp->perm[6] == 's' || tmp->perm[9] == 't')
+		put_name2(tmp);
 	else if (tmp->perm[3] == 'x' && tmp->perm[6] == 'x' && tmp->perm[9] == 'x')
-		ft_putstr_color(tmp->name, " \e[31m");
+		ft_putstr_color(tmp->name, "\e[31m");
 	else
 		ft_putstr(tmp->name);
 	if (op.one)
@@ -65,9 +71,8 @@ char	*color_name(t_recu *tmp, char *str, t_option op)
 	else if (tmp->perm[9] == 't')
 		color_txt(str, tmp->name, "\e[31m");
 	else if (tmp->perm[3] == 'x' && tmp->perm[6] == 'x' && tmp->perm[9] == 'x')
-		color_txt(str, tmp->name, " \e[31m");
+		color_txt(str, tmp->name, "\e[31m");
 	else
 		ft_strcat(str, tmp->name);
 	return (str);
 }
-

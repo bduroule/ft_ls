@@ -86,9 +86,9 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putendl_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
-void    			ft_putspace(int n);
+void				ft_putspace(int n);
 void				ft_putendl_color(const char *s, const char *color);
-void    			ft_putstr_color(const char *s, const char *color);
+void				ft_putstr_color(const char *s, const char *color);
 
 /*
 ** Maths
@@ -101,7 +101,7 @@ int					ft_is_prime(int nb);
 void				ft_swap(int *a, int *b);
 int					*ft_range(int min, int max);
 int					ft_sqrt(int nb);
-int 				ft_up_rounded(double n);
+int					ft_up_rounded(double n);
 
 /*
 ** List

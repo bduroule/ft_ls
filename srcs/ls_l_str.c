@@ -13,24 +13,27 @@
 
 #include "ft_ls.h"
 
-char		**sort_av(int ac, char **av, int index)
+void		term_size(t_max *max, int count)
+{
+	(*max).n_name = count;
+	(*max).th_max = (*max).te_max / ((*max).n_max + (*max).i_max + 1);
+	(*max).c_max = ft_up_rounded((double)(*max).n_name / (*max).th_max);
+}
+
+char		**sort_av(int ac, char **av, int index, t_option op)
 {
 	int i;
 	int j;
 	int d;
 
-	i = index + 1;
+	i = index;
 	d = ac - 1;
-	while (i < ac - 1)
+	while (++i < ac - 1)
 	{
-		j = i + 1;
-		while (j < ac)
-		{
-			if (ft_strcmp(av[i], av[j]) < 0)
+		j = i;
+		while (++j < ac)
+			if (cmp_value(av[i], av[j], op) < 0)
 				ft_avswap(&av[i], &av[j]);
-			j++;
-		}
-		i++;
 	}
 	i = index + 1;
 	while (d > i)
@@ -42,7 +45,7 @@ char		**sort_av(int ac, char **av, int index)
 	return (av);
 }
 
-void	max_len(t_recu *tmp, t_max *max, t_option op)
+void		max_len(t_recu *tmp, t_max *max, t_option op)
 {
 	if (ft_intsize(tmp->size) > (*max).s_max)
 		(*max).s_max = ft_intsize(tmp->size);
@@ -67,19 +70,43 @@ void	max_len(t_recu *tmp, t_max *max, t_option op)
 	(*max).t_block += tmp->block;
 }
 
-void	ls_l_str(t_recu *tmp, char *str, t_max max, t_option op)
+void		max_size(t_recu *recu, t_max *max, t_option op)
+{
+	t_recu		*tmp;
+	t_winsize	term;
+	int			count;
+
+	tmp = recu;
+	count = 0;
+	*max = (t_max){.s_max = 1, .l_max = 1, .g_max = 1, .u_max = 1, .c_max = 1,
+	.mi_max = -1, .ma_max = -1, .t_block = 0, .n_max = 1, .th_max = 1,
+	.i_max = 0, .te_max = 0, .n_name = 0};
+	ioctl(0, TIOCGWINSZ, &term);
+	(*max).te_max = term.ws_col;
+	while (tmp)
+	{
+		if ((tmp->perm[0] == 'b' || tmp->perm[0] == 'c') && (*max).ma_max == -1
+		&& (*max).mi_max == -1)
+		{
+			(*max).mi_max = 1;
+			(*max).ma_max = 1;
+		}
+		max_len(tmp, max, op);
+		count++;
+		tmp = (op.r ? tmp->prev : tmp->next);
+	}
+	term_size(max, count);
+}
+
+void		ls_l_str(t_recu *tmp, char *str, t_max max, t_option op)
 {
 	char	*itoatmp;
 
+	itoatmp = NULL;
 	if (op.i)
-	{
-		itoatmp = ft_itoa(tmp->neod);
-		ft_strcpy(str, itoatmp);
-		rspace(max.i_max - ft_intsize(tmp->neod) + 1, str);
-		ft_strcat(str, tmp->perm);
-	}
-	if (!op.i)
-	ft_strcpy(str, tmp->perm);
+		option_i(itoatmp, tmp, max, str);
+	else
+		ft_strcpy(str, tmp->perm);
 	rspace(max.l_max - ft_intsize(tmp->link) + 1, str);
 	if (!(itoatmp = ft_itoa(tmp->link)))
 		ls_error(tmp->path, MALLOC);

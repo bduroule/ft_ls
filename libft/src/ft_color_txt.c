@@ -13,10 +13,10 @@
 
 #include "../include/libft.h"
 
-char *color_txt(char *str, char *name, char *color)
+char	*color_txt(char *str, char *name, char *color)
 {
-        ft_strcat(str, color);
-        ft_strcat(str, name);
-        ft_strcat(str, "\e[39;49m");
-        return (str);
+	ft_strcat(str, color);
+	ft_strcat(str, name);
+	ft_strcat(str, "\e[39;49m");
+	return (str);
 }
